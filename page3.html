@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inscription Prestataire - Étape 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #00D4FF;
+      --background: #0d0f25;
+      --text: #fff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('Back.jpg') center/cover no-repeat;
+      filter: blur(6px) brightness(0.5);
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 10px;
+      background: #fff;
+      color: #000;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #00aee6, #00ffe0);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Étape 3/3<br>Finalisation</h1>
+    <form action="confirmation.html" method="post" enctype="multipart/form-data" onsubmit="return validateStep3()">
+      <label for="phone">Numéro de téléphone</label>
+      <input type="tel" id="phone" name="phone" required placeholder="+225 0700000000" pattern="[0-9+ ]{10,20}"/>
+
+      <label for="photo">Photo de profil (image uniquement)</label>
+      <input type="file" id="photo" name="photo" accept="image/*" required />
+
+      <button type="submit">Terminer l'inscription ✅</button>
+    </form>
+  </div>
+
+  <script>
+    function validateStep3() {
+      const phone = document.getElementById("phone").value.trim();
+      const photo = document.getElementById("photo").files[0];
+      if (!phone || !photo) {
+        alert("Veuillez remplir tous les champs requis.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>

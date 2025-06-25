@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrestaZone - App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-bg: #0d0f25;
+      --highlight: #00f0ff;
+      --accent: #00d4ff;
+      --text-color: #fff;
+      --muted: #aaa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--main-bg);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: relative;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: 600;
+      background: linear-gradient(120deg, #00AEEF, #00FFD5);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+    }
+
+    .hamburger {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5em;
+      cursor: pointer;
+      color: white;
+    }
+
+    .overlay-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      display: none;
+    }
+
+    .overlay-bg.active {
+      display: block;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -60%;
+      width: 60%;
+      height: 100%;
+      background: #15172f;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.4);
+      padding: 20px;
+      transition: right 0.3s ease;
+      z-index: 1000;
+      touch-action: none;
+    }
+
+    .side-menu.active {
+      right: 0;
+    }
+
+    .side-menu h3 {
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .side-menu a {
+      display: block;
+      margin: 12px 0;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 1em;
+    }
+
+    .services-section {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .service-card {
+      position: relative;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-radius: 20px;
+      padding: 10px;
+      height: 85px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: end;
+      backdrop-filter: blur(3px);
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 8px rgba(0, 255, 255, 0.06);
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 18px rgba(0, 255, 255, 0.3);
+    }
+
+    .overlay-card {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 0;
+    }
+
+    .service-card i {
+      position: relative;
+      z-index: 1;
+      font-size: 1.4em;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .cta {
+      text-align: center;
+      margin: 25px 20px 10px;
+    }
+
+    .cta h2 {
+      font-size: 1.1em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .cta p {
+      font-size: 0.9em;
+      color: var(--muted);
+    }
+
+    .hero-image {
+      margin: 20px;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 20px;
+    }
+
+    .hero-text {
+      position: absolute;
+      bottom: 15px;
+      left: 20px;
+      color: white;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-shadow: 0 0 12px rgba(0,0,0,0.8);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #15172f;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid #222;
+    }
+
+    .bottom-nav a {
+      text-decoration: none;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.7em;
+      transition: all 0.3s;
+    }
+
+    .bottom-nav i {
+      font-size: 1.4em;
+      color: var(--accent);
+      margin-bottom: 4px;
+      transition: 0.2s ease;
+    }
+
+    .bottom-nav a:hover i {
+      transform: scale(1.2);
+      color: #00ffee;
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
+  </style>
+
+  <script>
+    function navigateWithFade(href) {
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = href;
+      }, 400);
+    }
+
+    const menu = () => document.getElementById('sideMenu');
+    const overlay = () => document.getElementById('overlay');
+
+    function toggleMenu() {
+      menu().classList.toggle('active');
+      overlay().classList.toggle('active');
+    }
+
+    function closeMenu() {
+      menu().classList.remove('active');
+      overlay().classList.remove('active');
+    }
+
+    // Glissement pour fermer
+    let startX = 0;
+    window.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (menu().classList.contains('active')) {
+        const moveX = e.touches[0].clientX;
+        if (moveX - startX > 50) {
+          closeMenu();
+        }
+      }
+    });
+  </script>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <i class="fas fa-circle-nodes"></i> Services
+    <i class="fas fa-bars hamburger" onclick="toggleMenu()"></i>
+  </div>
+
+  <div class="overlay-bg" id="overlay" onclick="closeMenu()"></div>
+
+  <div class="side-menu" id="sideMenu">
+    <h3>Menu</h3>
+    <a href="Apropos.html">À propos</a>
+    <a href="contact.html">Contact</a>
+    <a href="faq.html">FAQ</a>
+    <a href="historique.html">Historique</a>
+  </div>
+
+  <div class="services-section">
+    <!-- Cartes de service (inchangées) -->
+    <!-- ... tes cartes déjà présentes ... -->
+  </div>
+
+  <div class="cta">
+    <h2>Bienvenue sur PrestaZone</h2>
+    <p>Des services fiables et rapides près de chez vous</p>
+  </div>
+
+  <div class="hero-image">
+    <img src="Pre.jpg" alt="Services Image">
+    <div class="hero-text">Des experts chez vous</div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html" onclick="navigateWithFade('index.html'); return false;">
+      <i class="fas fa-home"></i>
+      <span>Accueil</span>
+    </a>
+    <a href="agenda.html" onclick="navigateWithFade('agenda.html'); return false;">
+      <i class="fas fa-calendar-check"></i>
+      <span>Agenda</span>
+    </a>
+    <a href="compte.html" onclick="navigateWithFade('compte.html'); return false;">
+      <i class="fas fa-user"></i>
+      <span>Compte</span>
+    </a>
+  </div>
+
+</body>
+</html>
