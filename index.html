@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrestaZone - Accueil App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00D4FF;
+      --secondary: #00AEEF;
+      --text: #fff;
+      --glass: rgba(255,255,255,0.05);
+      --blur: 10px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      background: #0d0f25;
+      overflow: hidden;
+      color: var(--text);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('Back.jpg') center/cover no-repeat;
+      filter: blur(6px) brightness(0.6);
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+
+    .container {
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 90px;
+      height: auto;
+      margin: 0 auto 10px;
+      animation: pop 0.8s ease-in-out;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .welcome-card {
+      margin-top: 40px;
+      background: var(--glass);
+      border-radius: 25px;
+      padding: 30px 20px;
+      backdrop-filter: blur(var(--blur));
+      box-shadow: 0 8px 25px rgba(0, 255, 255, 0.1);
+      animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .welcome-card h1 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    .welcome-card p {
+      font-size: 0.9em;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .demo-note {
+      font-size: 0.7em;
+      color: #999;
+      font-style: italic;
+      margin-top: -5px;
+    }
+
+    .btn-group {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(to right, var(--secondary), var(--primary));
+      border: none;
+      border-radius: 30px;
+      padding: 14px;
+      color: white;
+      font-size: 1em;
+      font-weight: bold;
+      box-shadow: 0 4px 18px rgba(0,255,255,0.25);
+      transition: transform 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+    }
+
+    .footer {
+      font-size: 0.7em;
+      color: #999;
+      opacity: 0.7;
+    }
+
+    .loader-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .loader-screen img {
+      width: 100px;
+      height: auto;
+      animation: fadeIn 1s ease;
+    }
+
+    .demo-loader-text {
+      margin-top: 12px;
+      font-size: 0.75em;
+      color: #00eaff;
+      letter-spacing: 1px;
+      font-weight: 400;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeSlideUp 1.2s ease 1.2s forwards;
+    }
+
+    @keyframes fadeSlideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Écran de chargement -->
+  <div class="loader-screen" id="loader">
+    <img src="Logoo.png" alt="Chargement PrestaZone">
+    <div class="demo-loader-text">(version démo)</div>
+  </div>
+
+  <div class="overlay"></div>
+
+  <!-- Contenu principal -->
+  <div class="container" id="mainContent">
+    <div>
+      <img src="Logoo.png" alt="Logo PrestaZone" class="logo">
+
+      <div class="welcome-card">
+        <h1>Bienvenue sur PrestaZone</h1>
+        <p>Votre application de services à domicile fiable, rapide et professionnelle.</p>
+        <div class="demo-note">(Ceci est une version démo de l'application)</div>
+
+        <div class="btn-group">
+          <a href="client.html" class="btn"><i class="fas fa-search"></i> Je cherche un service</a>
+          <a href="prestataire.html" class="btn"><i class="fas fa-user-tie"></i> Je suis prestataire</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2025 PrestaZone ·a solution by KEMUEL NESSEMON
+    </div>
+  </div>
+
+  <script>
+    setTimeout(function () {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("mainContent").style.display = "flex";
+    }, 5000);
+  </script>
+</body>
+</html>
